@@ -1,0 +1,104 @@
+import sqlite3
+from flask import Flask, render_template, g, request, request, url_for, flash, redirect
+
+#conn = sqlite3.connect('Homework1.db')
+app = Flask(__name__)
+app.static_folder = 'static'
+
+#creates a secret key that no user must know
+app.config['SECRET_KEY'] = 'serplex'
+
+#connects to database
+def connect():
+    sql = sqlite3.connect("./Homework1.db")
+    sql.row_factory = sqlite3.Row
+    return sql
+
+#checks to see data base exists
+def get():
+    if not hasattr(g,'sqlite3'):
+        g.sqlite3_db = connect()
+    return g.sqlite3_db
+
+#turns database off
+@app.teardown_appcontext
+def close(error):
+    if hasattr(g,'sqlite_db'):
+        g.sqlite_db.close()    
+
+@app.route('/')
+def show():
+    db = get()
+    cur = db.execute('SELECT * FROM tbl1')
+    results = cur.fetchall()
+    return render_template('mainpage.html', results=results)
+
+@app.route('/getinfo',methods =["GET", "POST"])
+def getinfo():
+    if request.method == "POST":
+        # getting input with name = fname in HTML form
+        name = request.form.get("name")
+        # getting input with name = lname in HTML form 
+        id = request.form.get("id") 
+        points = request.form.get('points')
+        #reconnect sqlite3 
+        connection = connect()
+        c = connection.cursor()
+        c.execute("INSERT INTO tbl1 VALUES(?,?,?)",(name,id,points))
+        connection.commit()
+        connection.close()
+        return "Your name is " 
+    return render_template("getinfo.html")
+
+@app.route('/delete', methods =["GET","POST"])
+def delete():
+    if request.method == "POST":
+        id=request.form.get("id")
+        connection = connect()
+        c = connection.cursor()
+        c.execute('DELETE FROM tbl1 WHERE id=(?)', (id,))
+        connection.commit()
+        connection.close()
+        return "congratz its deleted"
+    return render_template("delete.html")
+
+def displayrow(id):
+    db = get()
+    cur = db.execute('SELECT * FROM tbl1 WHERE id=(?)', (id,))
+    data = cur.fetchall()
+    # set it into a list 
+    for i in data:
+        row = i
+    if row is not None:
+        information = "Name = " + str(row[0]) + " Points = " + str(row[2]) 
+    return information
+    
+
+@app.route('/read', methods =["GET", "POST"])
+def read():
+    if request.method == "POST":
+        id = request.form.get("id")
+        connection = connect()
+        c = connection.cursor()
+        c.execute('SELECT * FROM tbl1 WHERE id=(?)', (id,))
+        return displayrow(id)
+        connection.commit()
+        connection.close()
+    return render_template("read.html")
+
+@app.route('/update', methods =["GET","POST"])
+def update():
+    if request.method == "POST":
+        id = request.form.get("id")
+        name = request.form.get("name")
+        points = request.form.get("points")
+        connection = connect()
+        c = connection.cursor()
+        c.execute('UPDATE tbl1 SET points = ?, name = ? WHERE id = (?)', (points,name,id))
+        connection.commit()
+        connection.close()
+    return render_template("update.html")
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

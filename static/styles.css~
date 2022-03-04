@@ -1,0 +1,23 @@
+p{
+	font-size: 60px;
+	color: #ADD8E6;
+	text-align: center;
+	font-weight: bold;	
+}
+
+body{
+	text-align: center;
+}
+
+td,table,tr{
+	text-align: center;
+}
+button{
+	background-color: #04AA6D;
+  	border: none;
+  	color: white;
+  	padding: 16px 32px;
+  	text-decoration: none;
+  	margin: 4px 2px;
+  	cursor: pointer;
+}
