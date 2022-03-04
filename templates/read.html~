@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html>
+  <form action="{{ url_for("read")}}" method="POST">
+  <label for="id"> Please enter the id you would like to display:</label>
+  <input type="text" id="id" name="id" placeholder="id">
+  <button type="submit">Enter</button>
+<html>

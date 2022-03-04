@@ -1,0 +1,14 @@
+ <!DOCTYPE html>
+<html>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" />
+  <body>
+  <form action="{{ url_for("getinfo")}}" method="POST">
+  <label for="name"> PLease enter the person's name:</label>
+  <input type="text" id="name" name="name" placeholder="name">
+  <label for="id">Please enter the id:</label>
+  <input type="text" id="id" name="id" placeholder="id">
+  <label for="points">Please enter amount of points:</label>
+  <input type="text" id="points" name="points" placeholder="points">
+  <button type="submit">Enter</button>
+  </body>
+<html>

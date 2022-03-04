@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" />
+  <p>This is the current table! You can update it as you wish!<p>
+  <body>
+    <table>
+<!-- This prints displays the table by columns -->  
+{% for results in results %}
+<tr>
+    <td>{{results[0]}}</td>
+    <td>{{results[1]}}</td>
+    <td>{{results[2]}}</td>
+</tr>
+{% endfor %}
+   <table>
+     <!-- This is the action templates for the buttons that take it to the the designated url-->
+     <input type="button" class="button" value="Create new ID" onclick="window.location.href='/getinfo'">
+     <input type="button" class="button" value="Update existing ID" onclick="window.location.href='/update'">
+     <input type="button" class="button" value="Display information base on ID" onclick="window.location.href='/read'">
+     <input type="button" class="button" value="Delete existing ID" onclick="window.location.href='/delete'">
+    
+  </body>
+
+</html>
